@@ -8,29 +8,29 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float m_timerMax =10f;
     [SerializeField] private TextUI m_timerDisplay;
     [SerializeField] private TextUI m_status;
+    private PlayerMovement m_player;
     private float m_timer;
     private Coroutine m_alertCounter;
-    private static GameManager m_instance;
-    public static GameManager Instance { get { return m_instance; } }
+    public static GameManager Instance { get; private set; }
+    
 
     public Action<AIState> GuardStatusUpdate;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            m_instance = this;
-        
+       if(Instance != null && Instance != this)
+    {
+            Destroy(this);
         }
         else
         {
-            Destroy(this);
-
+            Instance = this;
         }
     }
     private void Start()
     {
         m_status.UpdateUI("Safe ");
+        m_player = FindObjectOfType<PlayerMovement>();
     }
 
     public void Caught()
@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         m_status.UpdateUI("You been caught");
         GuardStatusUpdate.Invoke(AIState.Patrol);
         Invoke("Safe", 1f);
+        m_player.GoTojail();
     }
 
     public void FoundInvader()
@@ -53,8 +54,8 @@ public class GameManager : MonoBehaviour
     }
     public void Caution()
     {
-        if (m_alertCounter != null)
-            return;
+        
+        Debug.Log("Caution  State");
         m_status.UpdateUI("Caution! ");
         GuardStatusUpdate.Invoke(AIState.Investigate);
         m_alertCounter = StartCoroutine(CountDown());
@@ -62,10 +63,14 @@ public class GameManager : MonoBehaviour
 
     public void Safe()
     {
-        StopCoroutine(m_alertCounter);
+        if (m_alertCounter != null)
+        {
+            StopCoroutine(m_alertCounter);
+        }
+     
         m_alertCounter = null;
         m_status.UpdateUI("Safe ");
-
+        Debug.Log("SAFE Sate");
         GuardStatusUpdate.Invoke(AIState.Patrol);
     }
 
@@ -75,7 +80,8 @@ public class GameManager : MonoBehaviour
         while (m_timer > 0)
         {
             m_timer--;
-            yield return new WaitForSeconds(1f);
+
+            yield return new WaitForSecondsRealtime(1f);
             m_timerDisplay.UpdateUI(m_timer);
         }
         m_timer = 0;

@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private InputAction m_lookX;
     private InputAction m_lookY;
     private InputAction m_fire;
-    private Transform m_SpawnPoint;
+    private Vector3 m_SpawnPoint;
     private CharacterController m_controller;
     
     private Vector3 m_velocity;
@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     {
         m_playerInput = new PlayerInput();
         m_controller = GetComponent<CharacterController>();
-        m_SpawnPoint = transform;
+        m_SpawnPoint = transform.position;
     }
 
     private void OnEnable()
@@ -60,12 +60,15 @@ public class PlayerMovement : MonoBehaviour
         Movement();
         Look();
         Gravity();
+
+
     }
 
     public void GoTojail()
     {
-        transform.position = m_SpawnPoint.position;
-        transform.rotation = m_SpawnPoint.rotation;
+     
+  
+        transform.position = m_SpawnPoint;
 
     }
     
@@ -104,5 +107,8 @@ public class PlayerMovement : MonoBehaviour
 
         m_controller.Move(m_velocity * Time.deltaTime);
     }
+
+    
+
     
 }

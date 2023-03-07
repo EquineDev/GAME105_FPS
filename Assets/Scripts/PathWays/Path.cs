@@ -24,13 +24,8 @@ public class Path : MonoBehaviour
         {
             return;
         }
-        if (m_pathPoints[0] != null)
-        {
-
-            Gizmos.DrawLine(this.transform.position, m_pathPoints[0].transform.position);
-
-        }
-        for (int i = 1; i < m_pathPoints.Length; i++)
+        
+        for (int i = 1; i < m_pathPoints.Length-1; i++)
         {
             if (m_pathPoints[i - 1] != null && m_pathPoints[i] != null)
             {

@@ -87,7 +87,7 @@ public class Agents : MonoBehaviour
                 m_investigationAttempts = 0;
                 m_navAgent.speed = m_patrolSpeed;
                 m_agentState = AIState.Patrol;
-                GameManager.Instance.Safe();
+               
             }
             else
             {
@@ -109,7 +109,7 @@ public class Agents : MonoBehaviour
             m_investigationAttempts = 0;
             m_navAgent.speed = m_patrolSpeed;
             m_agentState = AIState.Patrol;
-            GameManager.Instance.Safe();
+            
         }
     }
 
